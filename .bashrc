@@ -135,4 +135,4 @@ unset __conda_setup
 . "$HOME/.cargo/env"
 
 
-alias config='/usr/bin/git --git-dir=/home/ingebrigt/.cfg/ --work-tree=/home/ingebrigt'
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
