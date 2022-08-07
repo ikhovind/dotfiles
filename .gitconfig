@@ -1,0 +1,9 @@
+[user]
+	email = ing.hovind@hotmail.com
+	name = Ingebrigt Hovind
+[init]
+	defaultBranch = main
+[core]
+	editor = vim
+[pull]
+	rebase = false
