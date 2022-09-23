@@ -136,3 +136,6 @@ unset __conda_setup
 
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+export PATH="$HOME/programs/llvm-project/build/bin:$PATH"
+export PATH="$HOME/programs/tldr:$PATH"
+export LD_LIBRARY_PATH="$HOME/programs/llvm-project/build/lib:$LD_LIBRARY_PATH"

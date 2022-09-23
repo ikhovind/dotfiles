@@ -1,138 +1,40 @@
 call plug#begin()
 Plug 'drewtempelmeyer/palenight.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'wlangstroth/vim-racket'
-Plug 'sheerun/vim-polyglot'
-Plug 'rust-lang/rust.vim'
-Plug 'preservim/tagbar'
-Plug 'universal-ctags/ctags'
-Plug 'luochen1990/rainbow'
-Plug 'vim-syntastic/syntastic'
-Plug 'itchyny/lightline.vim'
-Plug 'tpope/vim-surround'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'tommcdo/vim-lion'
-Plug 'Shirk/vim-gas'
+Plug 'deoplete-plugins/deoplete-clang'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'ntpeters/vim-better-whitespace'
 call plug#end()
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+let mapleader = ","
 
-" Get syntax files from config folder
-set runtimepath+=~/.config/nvim/syntax
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
 
-" Theme
-colorscheme palenight
-
-" Disable C-z from job-controlling neovim
-nnoremap <c-z> <nop>
-
-" Remap C-c to <esc>
-nmap <c-c> <esc>
-imap <c-c> <esc>
-vmap <c-c> <esc>
-omap <c-c> <esc>
-
-" Syntax highlighting
-syntax on
-
-" Position in code
-set number
-set ruler
-
-" Don't make noise
-set visualbell
-
-" default file encoding
-set encoding=utf-8
-
-" Line wrap
-set wrap
-
-" Function to set tab width to n spaces
-function! SetTab(n)
-    let &l:tabstop=a:n
-    let &l:softtabstop=a:n
-    let &l:shiftwidth=a:n
-    set expandtab
-endfunction
-
-command! -nargs=1 SetTab call SetTab(<f-args>)
-
-" Function to trim extra whitespace in whole file
-function! Trim()
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-endfun
-
-command! -nargs=0 Trim call Trim()
-
-set laststatus=2
-
-" Highlight search results
-set hlsearch
-set incsearch
-
-" auto + smart indent for code
-set autoindent
-set smartindent
-
-set t_Co=256
-
-" ASM == JDH8
-augroup jdh8_ft
-  au!
-  autocmd BufNewFile,BufRead *.asm    set filetype=jdh8
-augroup END
-
-" SQL++ == SQL
-augroup sqlpp_ft
-  au!
-  autocmd BufNewFile,BufRead *.sqlp   set syntax=sql
-augroup END
-
-" .S == gas
-augroup gas_ft
-  au!
-  autocmd BufNewFile,BufRead *.S      set syntax=gas
-augroup END
-
-" JFlex syntax highlighting
- augroup jfft
-   au BufRead,BufNewFile *.flex,*.jflex    set filetype=jflex
- augroup END
- au Syntax jflex    so ~/.vim/syntax/jflex.vim
-
- " Mouse support
- set mouse=a
-
- " Map F8 to Tagbar
- nmap <F8> :TagbarToggle<CR>
-
- " CTags config
- let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-
- " disable backup files
- set nobackup
- set nowritebackup
-
- " no delays!
- set updatetime=300
-
- set cmdheight=1
- set shortmess+=c
-
- set signcolumn=yes
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
@@ -143,11 +45,6 @@ if has('nvim')
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-"inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-"                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -161,20 +58,18 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-"autocmd CursorHol * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
@@ -193,13 +88,16 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
+
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -228,13 +126,13 @@ nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Format :call CocActionAsync('format')
 
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -259,17 +157,20 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-" add cocstatus into lightline
-let g:lightline = {
-	\ 'colorscheme': 'wombat',
-	\ 'active': {
-	\   'left': [ [ 'mode', 'paste' ],
-	\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-	\ },
-	\ 'component_function': {
-	\   'cocstatus': 'coc#status'
-	\ },
-	\ }
+colorscheme palenight
+"" gui configuration
+hi Pmenu ctermfg=red
 
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()d
+set runtimepath^=/home/ingebrigt/.config/nvim/plugin/AfterColors.vim
+set number
+set encoding=utf-8
+set expandtab
+set shiftwidth=2
+set autoindent
+set smartindent
+set cindent
+set autochdir
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>bb <C-^>
 
