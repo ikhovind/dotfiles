@@ -16,17 +16,11 @@ vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increa
 vim.keymap.set("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
 vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 
-wk.register({
-  b = {
-    name = "Buffer", -- optional group name
-    t = { "<cmd>:tab term<cr>", "[b]uffer [t]erminal" },
-    o = { "<cmd>:BufferLineCloseOthers<cr>", "[b]uffer close [o]thers" },
-    -- additional options for creating the keymap
-    -- n = { "New File" }, -- just a label. don't create any mapping
-    -- ["1"] = "which_key_ignore",  -- special label to hide it in the popup
-    -- b = { function() print("bar") end, "Foobar" } -- you can also pass functions!
-  },
-}, { prefix = "<leader>" })
+wk.add({
+  { "<leader>b", group = "Buffer" },
+  { "<leader>bo", "<cmd>:BufferLineCloseOthers<cr>", desc = "[b]uffer close [o]thers" },
+  { "<leader>bt", "<cmd>:tab term<cr>", desc = "[b]uffer [t]erminal" },
+})
 
 -- tabs
 vim.keymap.set("n", "<A-h>", "<cmd>tabprevious<cr>", { desc = "Prev tab" })

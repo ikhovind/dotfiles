@@ -5,19 +5,16 @@
 --nnoremap gpr <cmd>lua require('goto-preview').goto_preview_references()<CR>
 local wk = require("which-key")
 
-wk.register({
-  ["g"] = {
-    name = "+Goto",
-    P = {"<cmd>lua require('goto-preview').close_all_win()<CR>",  "Close all previews"},
-
-  },
-  ["gp"] = {
-    name = "+Preview",
-    d = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Preview definition" },
-    t = { "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", "Preview type" },
-    i = { "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Preview implementation" },
-    r = { "<cmd>lua require('goto-preview').goto_preview_references()<CR>", "Preview references" },
-  },
+wk.add({
+  {
+    { "g", group = "Goto" },
+    { "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>", desc = "Close all previews" },
+    { "gp", group = "Preview" },
+    { "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", desc = "Preview definition" },
+    { "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", desc = "Preview implementation" },
+    { "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", desc = "Preview references" },
+    { "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", desc = "Preview type" },
+  }
 })
 
 vim.keymap.set("n", "<esc>", "<cmd>lua require('goto-preview').close_all_win()<CR>")
