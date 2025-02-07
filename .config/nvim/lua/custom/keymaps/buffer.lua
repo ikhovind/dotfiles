@@ -19,6 +19,7 @@ vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buff
 wk.add({
   { "<leader>b", group = "Buffer" },
   { "<leader>bo", "<cmd>:BufferLineCloseOthers<cr>", desc = "[b]uffer close [o]thers" },
+  { "<leader>bp", "<cmd>:BufferLinePickClose<cr>", desc = "[b]uffer [p]ick close" },
   { "<leader>bt", "<cmd>:tab term<cr>", desc = "[b]uffer [t]erminal" },
 })
 
