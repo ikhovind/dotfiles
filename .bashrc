@@ -165,3 +165,4 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Liflig-greier
 alias cals="npx @capraconsulting/cals-cli"
+eval "$(mise activate bash)"
