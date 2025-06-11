@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=config.schema.yaml
+command_alias_start_index: 200
+keybindings:
+  # root_table: C-Space
+  prefix_table: Space
+title:
+  style: align=centre,bold
+  prefix: tmux
+  prefix_style: fg=green,align=centre,bold
+position:
+  x: R
+  y: P
+custom_variables:
+  - name: log_info
+    value: "#[fg=green,italics] [info]#[default]#[italics]"
+macros:
+  - name: reload-config
+    commands:
+      - display "#{log_info} Loading config... "
+      - source-file $HOME/.tmux.conf
+      - display -p "\n\n... Press ENTER to continue"
+  - name: restart-pane
+    commands:
+      - display "#{log_info} Restarting pane"
+      - "respawnp -k -c #{pane_current_path}"
+items:
+  - name: New
+    key: n
+    command: "command-prompt -p \"Name of new window: \" \"new-window -n '%%'\""
+  - name: Pick
+    key: p
+    command: choose-tree -Zw
+  - name: Previous
+    key: h
+    command: previous-window
+  - name: Next
+    key: l
+    command: next-window
+  - separator: true
+  - name: Rename
+    key: R
+    command: command-prompt -I "#W" "renamew -- \"%%\""
+  - name: Kill
+    key: X
+    command: 'confirm -p "Kill window #W? (y/n)" killw'
+  - separator: true
+  - name: Time
+    key: T
+    command: clock-mode
+  - name: Show messages
+    key: "~"
+    command: show-messages
+  - name: +Keys
+    key: "?"
+    command: list-keys -N
