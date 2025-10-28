@@ -25,9 +25,10 @@ local wk = require("which-key")
 -- }, { prefix = "<leader>" })
 
 wk.add({
-    { "<leader>f", group = "Files" }, -- group
+    { "<leader>f", group = "Find" }, -- group
     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffer", mode = "n" },
+    { "<leader>fn", "<cmd>Navbuddy<cr>", desc = "Find buffer", mode = "n" },
     { "<leader>fp", "<cmd>Telescope projects<cr>", desc = "Find buffer", mode = "n" },
     { "<leader>s", group = "Text search" }, -- group
     { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Search string", mode = "n" },

@@ -257,7 +257,7 @@ require("toggleterm").setup()
 vim.o.hlsearch = true
 vim.o.expandtab = true -- enable the use of space in tab
 vim.o.tabstop = 4 -- number of space in a tab
-vim.o.shiftwidth = 4 -- number of space in a tab
+vim.o.shiftwidth = 2 -- number of space in a tab
 
 -- Make line numbers default
 vim.wo.number = true
@@ -464,7 +464,8 @@ end
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
+  --clangd = {
+  --},
   -- gopls = {},
   -- p
   -- pyright = {},
@@ -515,6 +516,7 @@ mason_lspconfig.setup_handlers {
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
+      cmd = (servers[server_name] or {}).cmd,
     }
   end
 }
