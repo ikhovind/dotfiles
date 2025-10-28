@@ -30,13 +30,10 @@ items:
   - name: Pick
     key: p
     command: choose-tree -Zw
-  - name: Previous
-    key: h
-    command: previous-window
-  - name: Next
-    key: l
-    command: next-window
   - separator: true
+  - name: ← pane
+    key: h
+    command: select-pane -L
   - name: Rename
     key: R
     command: command-prompt -I "#W" "renamew -- \"%%\""
