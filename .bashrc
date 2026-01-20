@@ -151,13 +151,49 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[0
 
 alias cnum="bindechexascii"
 alias gcane="git commit --amend --no-edit"
+alias grc="git rebase --continue"
 alias gpfwl="git push --force-with-lease"
 alias bashrc="nvim ~/.bashrc"
 alias open="/mnt/c/Program\ Files\ \(x86\)/Microsoft/Edge/Application/msedge.exe /usr/bin/edge"
-eval $(ssh-agent) && ssh-add ~/.ssh/github
-eval $(ssh-agent) && ssh-add ~/.ssh/uio_github
 alias sudop='sudo env PATH=$PATH'
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+# CMake generate shortcut
+cg() {
+    if [ $# -lt 2 ]; then
+        echo "Usage: cg <build_type> <output_dir>"
+        echo "Example: cg debug out"
+        return 1
+    fi
+
+    local build_type="$1"
+    local output_dir="$2"
+
+    # Capitalize first letter for CMAKE_BUILD_TYPE
+    build_type="$(tr '[:lower:]' '[:upper:]' <<< ${build_type:0:1})${build_type:1}"
+
+    cmake -B "$output_dir" -DCMAKE_BUILD_TYPE="$build_type" "${@:3}"
+}
+
+# CMake build shortcut
+cb() {
+    if [ $# -lt 1 ]; then
+        echo "Usage: cb <build_dir> [additional args]"
+        echo "Example: cb out"
+        return 1
+    fi
+
+    local build_dir="$1"
+
+    cmake --build "$build_dir" -j 6 "${@:2}"
+}
+
+# Start ssh-agent only if not already running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add ~/.ssh/github 2>/dev/null
+    ssh-add ~/.ssh/uio_github 2>/dev/null
+fi
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(zoxide init bash --cmd cd)"

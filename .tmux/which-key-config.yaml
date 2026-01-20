@@ -41,9 +41,9 @@ items:
     key: X
     command: 'confirm -p "Kill window #W? (y/n)" killw'
   - separator: true
-  - name: Time
-    key: T
-    command: clock-mode
+  - name: Copy Mode
+    key: Escape
+    command: copy-mode
   - name: Show messages
     key: "~"
     command: show-messages

@@ -70,7 +70,7 @@ require('lazy').setup({
   'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  --'tpope/vim-sleuth',
+  'tpope/vim-sleuth',
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -148,9 +148,13 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-        vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-        vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+        local gs = require('gitsigns')
+        vim.keymap.set('n', '<leader>gn', gs.next_hunk, { buffer = bufnr, desc = '[G]it [N]ext Hunk' })
+        vim.keymap.set('n', '<leader>gN', gs.prev_hunk, { buffer = bufnr, desc = '[G]it Previous Hunk' })
+        vim.keymap.set('n', '<leader>gp', gs.preview_hunk, { buffer = bufnr, desc = '[G]it [P]review Hunk' })
+        vim.keymap.set('n', '<leader>ga', gs.stage_buffer, { buffer = bufnr, desc = '[G]it [A]dd/Stage File' })
+        vim.keymap.set('n', '<leader>gh', gs.stage_hunk, { buffer = bufnr, desc = '[G]it Stage [H]unk' })
+        vim.keymap.set('v', '<leader>gh', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { buffer = bufnr, desc = '[G]it Stage [H]unk' })
       end,
     },
   },
@@ -257,7 +261,7 @@ require("toggleterm").setup()
 vim.o.hlsearch = true
 vim.o.expandtab = true -- enable the use of space in tab
 vim.o.tabstop = 4 -- number of space in a tab
-vim.o.shiftwidth = 2 -- number of space in a tab
+vim.o.shiftwidth = 4 -- number of space for indentation (matches tabstop)
 
 -- Make line numbers default
 vim.wo.number = true
