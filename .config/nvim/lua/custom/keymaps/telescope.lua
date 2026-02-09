@@ -1,5 +1,40 @@
 local wk = require("which-key")
 
+-- Open a file as "temporary" - auto-closes when you leave it
+local function find_temporary()
+  require('telescope.builtin').find_files({
+    attach_mappings = function(_, map)
+      local actions = require('telescope.actions')
+      local action_state = require('telescope.actions.state')
+
+      local function open_temporary(prompt_bufnr)
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        if entry then
+          vim.cmd('edit ' .. vim.fn.fnameescape(entry.path))
+          local bufnr = vim.api.nvim_get_current_buf()
+          vim.api.nvim_create_autocmd('BufHidden', {
+            buffer = bufnr,
+            once = true,
+            callback = function()
+              -- Delay slightly to allow navigation to complete
+              vim.defer_fn(function()
+                if vim.api.nvim_buf_is_valid(bufnr) and not vim.bo[bufnr].modified then
+                  vim.api.nvim_buf_delete(bufnr, { force = false })
+                end
+              end, 100)
+            end,
+          })
+        end
+      end
+
+      map('i', '<CR>', open_temporary)
+      map('n', '<CR>', open_temporary)
+      return true
+    end,
+  })
+end
+
 -- wk.register({
 --   f = {
 --     name = "File search", -- optional group name
@@ -30,6 +65,7 @@ wk.add({
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffer", mode = "n" },
     { "<leader>fs", "<cmd>Navbuddy<cr>", desc = "[F]ind [S]ymbols", mode = "n" },
     { "<leader>fp", "<cmd>Telescope projects<cr>", desc = "[F]ind [P]roject", mode = "n" },
+    { "<leader>ft", find_temporary, desc = "[F]ind [T]emporary (auto-close)", mode = "n" },
     { "<leader>s", group = "Text search" }, -- group
     { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Search string", mode = "n" },
   }

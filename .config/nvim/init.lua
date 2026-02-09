@@ -440,7 +440,10 @@ local on_attach = lsp_keymaps.on_attach
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  --clangd = {
+  clangd = {
+    cmd = { "clangd", "--offset-encoding=utf-8" },
+  },
+
   --},
   -- gopls = {},
   -- p
