@@ -1,5 +1,6 @@
 return {
-  'Civitasv/cmake-tools.nvim',
+  'lceWolf/cmake-tools.nvim',
+  branch = 'cmake_testing_improvements',
 
   config = function()
     local osys = require("cmake-tools.osys")
@@ -8,7 +9,9 @@ return {
       ctest_command = "ctest", -- this is used to specify ctest command path
       cmake_use_preset = true,
       cmake_regenerate_on_save = true, -- auto generate when save CMakeLists.txt
-      cmake_generate_options = { "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
+      cmake_generate_options = {
+        "-G", "Ninja",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
       cmake_build_options = {
         "-j8",
       }, -- this will be passed when invoke `CMakeBuild`
@@ -48,6 +51,7 @@ return {
         opts = {}, -- the options the executor will get, possible values depend on the executor type. See `default_opts` for possible values.
         default_opts = { -- a list of default and possible values for executors
           quickfix = {
+            direction = "tab",
             show = "always", -- "always", "only_on_error"
             position = "vert rightbelow", -- "vertical", "horizontal", "leftabove", "aboveleft", "rightbelow", "belowright", "topleft", "botright", use `:h vertical` for example to see help on them
             size = 90,
@@ -116,7 +120,7 @@ return {
                 strategy = {
                     "toggleterm",
                     direction = "tab",
-                    autos_croll = true,
+                    auto_scroll = true,
                     quit_on_exit = "success"
                 }
             }, -- options to pass into the `overseer.new_task` command

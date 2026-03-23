@@ -8,6 +8,7 @@ wk.add({
   { "<leader>cpt", "<cmd>CMakeSelectBuildTarget<cr>", desc = "[C]Make [P]ick [T]arget" },
   { "<leader>cbt", "<cmd>CMakeBuild<cr>", desc = "[C]Make [B]uild [T]arget" },
   { "<leader>cpl", "<cmd>CMakeSelectLaunchTarget<cr>", desc = "[C]Make [P]ick [L]aunch" },
+  { "<leader>cpb", "<cmd>CMakeSelectBuildType<cr>", desc = "[C]Make [P]ick [B]uild" },
   { "<leader>cr", "<cmd>CMakeRun<cr>", desc = "[C]Make [R]un" },
 })
 

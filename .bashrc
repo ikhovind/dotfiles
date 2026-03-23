@@ -157,6 +157,8 @@ alias bashrc="nvim ~/.bashrc"
 alias open="/mnt/c/Program\ Files\ \(x86\)/Microsoft/Edge/Application/msedge.exe /usr/bin/edge"
 alias sudop='sudo env PATH=$PATH'
 
+alias rgf="rg --files"
+
 
 # CMake generate shortcut
 cg() {

@@ -6,6 +6,6 @@ require('leap').add_repeat_mappings(';', ',', {
   -- By default, all modes are included.
   modes = {'n', 'x', 'o'},
 })
-require('leap').add_default_mappings()
+--require('leap').add_default_mappings()
 
 return {}

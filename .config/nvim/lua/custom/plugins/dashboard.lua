@@ -14,6 +14,7 @@ return {
       theme = 'hyper',
       change_to_vcs_root = true,
       config = {
+      project = { enable = false },
         --          project = { enable = true, limit = 8, icon = 'your icon', label = '', action = new_tab },
         week_header = {
          enable = true,

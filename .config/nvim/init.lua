@@ -323,6 +323,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+vim.api.nvim_create_autocmd("TabEnter", {
+  callback = function()
+    local ok, cmake = pcall(require, "cmake-tools")
+    if ok then
+      cmake.select_cwd({ args = tab_cwd })
+    end
+  end,
+})
+
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
@@ -338,7 +347,7 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-pcall(require('telescope').load_extension, 'projects')
+pcall(require('telescope').load_extension, 'project')
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -347,6 +356,7 @@ require('nvim-treesitter.configs').setup {
   ensure_installed = { 
     'c',
     'cpp',
+    'cmake',
     'go',
     'lua',
     'python',
@@ -441,7 +451,10 @@ local on_attach = lsp_keymaps.on_attach
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {
-    cmd = { "clangd", "--offset-encoding=utf-8" },
+    cmd = { "clangd", "--enable-config" },
+  },
+  neocmake = {
+    cmd = { "neocmakelsp", "stdio" },
   },
 
   --},
@@ -488,17 +501,16 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-      cmd = (servers[server_name] or {}).cmd,
-    }
-  end
-}
+for server_name, config in pairs(servers) do
+  vim.lsp.config(server_name, {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = config,
+    filetypes = config.filetypes,
+    cmd = config.cmd,
+  })
+  vim.lsp.enable(server_name)
+end
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
@@ -547,6 +559,3 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et

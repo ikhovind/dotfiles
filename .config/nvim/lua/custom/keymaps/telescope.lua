@@ -63,12 +63,32 @@ wk.add({
     { "<leader>f", group = "Find" }, -- group
     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffer", mode = "n" },
-    { "<leader>fs", "<cmd>Navbuddy<cr>", desc = "[F]ind [S]ymbols", mode = "n" },
-    { "<leader>fp", "<cmd>Telescope projects<cr>", desc = "[F]ind [P]roject", mode = "n" },
+    { "<leader>fs", function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, desc = "Find Symbols (Workspace)", mode = "n" },
+    { "<leader>fd", function() require('telescope.builtin').lsp_document_symbols() end, desc = "Find Symbols (Buffer)", mode = "n" },
+    { "<leader>fp", "<cmd>Telescope project<cr>", desc = "[F]ind [P]roject", mode = "n" },
     { "<leader>ft", find_temporary, desc = "[F]ind [T]emporary (auto-close)", mode = "n" },
     { "<leader>s", group = "Text search" }, -- group
     { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Search string", mode = "n" },
+    { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Search Diagnostics", mode = "n" },
   }
 )
+
+-- vim.keymap.set("n", "<leader>fp", function()
+--   require('telescope').extensions.projects.projects({
+--     attach_mappings = function(_, map)
+--       map("i", "<CR>", function(prompt_bufnr)
+--         local selected = require('telescope.actions.state').get_selected_entry()
+--         require('telescope.actions').close(prompt_bufnr)
+--         vim.cmd('tcd ' .. selected.value)
+--       end)
+--       map("n", "<CR>", function(prompt_bufnr)
+--         local selected = require('telescope.actions.state').get_selected_entry()
+--         require('telescope.actions').close(prompt_bufnr)
+--         vim.cmd('tcd ' .. selected.value)
+--       end)
+--       return true
+--     end
+--   })
+-- end, { desc = "[F]ind [P]roject" })
 
 return {}

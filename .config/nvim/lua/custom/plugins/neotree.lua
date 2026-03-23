@@ -1,4 +1,3 @@
-
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -37,13 +36,13 @@ return {
             highlight = "NeoTreeIndentMarker",
             -- expander config, needed for nesting files
             with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-            expander_collapsed = "",
-            expander_expanded = "",
+            expander_collapsed = "",
+            expander_expanded = "",
             expander_highlight = "NeoTreeExpander",
           },
           icon = {
-            folder_closed = "",
-            folder_open = "",
+            folder_closed = "",
+            folder_open = "",
             folder_empty = "󰜌",
             -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
             -- then these will never be used.
@@ -63,15 +62,15 @@ return {
             symbols = {
               -- Change type
               added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
+              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
               deleted   = "✖",-- this can only be used in the git_status source
               renamed   = "󰁕",-- this can only be used in the git_status source
               -- Status type
-              untracked = "",
-              ignored   = "",
+              untracked = "",
+              ignored   = "",
               unstaged  = "󰄱",
-              staged    = "",
-              conflict  = "",
+              staged    = "",
+              conflict  = "",
             }
           },
           -- If you don't want to use these columns, you can set `enabled = false` for each of them individually
@@ -161,6 +160,11 @@ return {
         },
         nesting_rules = {},
         filesystem = {
+          bind_to_cwd = true,
+          cwd_target = {
+            sidebar = "tab",
+            current = "window",
+          },
           filtered_items = {
             visible = false, -- when true, they will just be displayed differently than normal items
             hide_dotfiles = true,
@@ -174,7 +178,7 @@ return {
               --"*/src/*/tsconfig.json",
             },
             always_show = { -- remains visible even if other settings would normally hide it
-              --".gitignored",
+              ".gitignored",
             },
             never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
               --".DS_Store",
@@ -274,36 +278,18 @@ return {
           }
         }
       })
-    end
 
+vim.api.nvim_create_autocmd("TabEnter", {
+  callback = function()
+    vim.schedule(function()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree" then
+          vim.cmd("Neotree filesystem dir=" .. vim.fn.getcwd())
+          return
+        end
+      end
+    end)
+  end,
+})
+  end,
 }
-
-
--- return {
---   "nvim-tree/nvim-tree.lua",
---   version = "*",
---   config = function ()
---     require('nvim-tree').setup {
---         sort_by = "case_sensitive",
---         view = {
---           width = 30,
---         },
---         git = {
---           enable = true,
---           ignore = true,
---           timeout = 400,
---         },
---         filters = {
---           dotfiles = true,
---           git_ignored=true,
---           custom = {},
---           exclude = {},
---         },
---         update_focused_file = {
---           enable = true,
---         },
---     }
---   end,
--- }
-
-
