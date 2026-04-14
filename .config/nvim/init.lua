@@ -87,7 +87,7 @@ require('lazy').setup({
       { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
+      'folke/lazydev.nvim',
     },
   },
   {
@@ -323,14 +323,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-vim.api.nvim_create_autocmd("TabEnter", {
-  callback = function()
-    local ok, cmake = pcall(require, "cmake-tools")
-    if ok then
-      cmake.select_cwd({ args = tab_cwd })
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd("TabEnter", {
+--   callback = function()
+--     local ok, cmake = pcall(require, "cmake-tools")
+--     if ok then
+--       cmake.select_cwd({ args = tab_cwd })
+--     end
+--   end,
+-- })
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -469,7 +469,7 @@ local servers = {
     pylsp = {
       plugins = {
         rope_autoimport = {
-          enabled = true
+          enabled = false
         },
         pydocstyle = {
           enabled = true
@@ -487,7 +487,7 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('lazydev').setup()
 require('goto-preview').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
@@ -511,6 +511,13 @@ for server_name, config in pairs(servers) do
   })
   vim.lsp.enable(server_name)
 end
+
+vim.lsp.config("texlab", {
+  on_init = function(client)
+    client.offset_encoding = "utf-8"
+  end,
+})
+vim.lsp.enable("texlab")
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
@@ -559,3 +566,6 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+vim.lsp.set_log_level("ERROR")
+vim.o.cmdheight = 0

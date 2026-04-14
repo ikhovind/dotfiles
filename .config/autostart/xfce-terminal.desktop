@@ -3,8 +3,11 @@ Encoding=UTF-8
 Version=0.9.4
 Type=Application
 Name=Terminal
-Exec=xfce4-terminal --maximize
+Exec=kitty --start-as=maximized
 OnlyShowIn=XFCE;
 StartupNotify=false
 Terminal=false
 Hidden=false
+Comment=
+RunHook=0
+

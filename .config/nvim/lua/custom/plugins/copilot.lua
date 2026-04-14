@@ -22,7 +22,7 @@ return {
         enabled = true,
         auto_trigger = true,
         hide_during_completion = true,
-        debounce = 75,
+        debounce = 150,
         keymap = {
           accept = "<M-l>",
           accept_word = false,
@@ -44,7 +44,11 @@ return {
         ["."] = false,
       },
       copilot_node_command = 'node', -- Node.js version must be > 18.x
-      server_opts_overrides = {},
+      server_opts_overrides = {
+        on_init = function(client)
+          client.offset_encoding = "utf-8"
+        end,
+      },
     })
   end,
 }
