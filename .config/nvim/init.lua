@@ -122,13 +122,13 @@ require('lazy').setup({
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
-      -- 'saadparwaiz1/cmp_luasnip',
+      'saadparwaiz1/cmp_luasnip',
 
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
 
       -- Adds a number of user-friendly snippets
-      -- 'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     },
   },
 
@@ -461,7 +461,6 @@ local servers = {
   -- gopls = {},
   -- p
   -- pyright = {},
-  -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -484,6 +483,11 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  ltex_plus = {
+    ltex = {
+      language = "en-US",
+    },
+  },
 }
 
 -- Setup neovim lua configuration
@@ -499,6 +503,7 @@ local mason_lspconfig = require 'mason-lspconfig'
 
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
+  automatic_enable = { exclude = { 'rust_analyzer' } },
 }
 
 for server_name, config in pairs(servers) do

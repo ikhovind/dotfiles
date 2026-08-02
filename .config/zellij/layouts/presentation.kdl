@@ -1,21 +1,10 @@
 layout {
-    cwd "/home/ikhovind/Documents/Skole"
-    tab name="thesis" focus=true {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
-        pane command="nvim" cwd="thesis" {
-            start_suspended true
-        }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
-    }
+    cwd "/home/ikhovind"
     tab name="spotify" hide_floating_panes=true {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
-        pane command="spotify_player" cwd="taps" {
+        pane command="spotify_player" cwd="/home/ikhovind/Programs/pipewire" {
             start_suspended true
         }
         pane size=1 borderless=true {
@@ -26,9 +15,28 @@ layout {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
-        pane command="pyradio" cwd="taps" {
+        pane command="/home/ikhovind/.local/pipx/venvs/pyradio/bin/python" {
+            args "/home/ikhovind/.local/bin/pyradio"
             start_suspended true
         }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="presentation" focus=true hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane edit="main.tex" cwd="Documents/Skole/thesis-presentation" focus=true
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="Tab #6" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane edit="main.tex" cwd="Documents/Skole/thesis"
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
@@ -37,7 +45,7 @@ layout {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
-        pane cwd="/home/ikhovind/Documents/Skole"
+        pane cwd="/home/ikhovind"
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
@@ -190,71 +198,65 @@ layout {
     }
     swap_floating_layout name="staggered" {
         floating_panes {
-            pane {
-                height "80%"
-                width "80%"
-                x "10%"
-                y "10%"
-            }
         }
     }
     swap_floating_layout name="enlarged" {
         floating_panes max_panes=10 {
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 1
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 2
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 3
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 4
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 5
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 6
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 7
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 8
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x "5%"
                 y 9
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "90%"
                 width "90%"
                 x 10
@@ -264,60 +266,60 @@ layout {
     }
     swap_floating_layout name="spread" {
         floating_panes max_panes=1 {
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 x "50%"
                 y "50%"
             }
         }
         floating_panes max_panes=2 {
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 width "45%"
                 x "1%"
                 y "25%"
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 width "45%"
                 x "50%"
                 y "25%"
             }
         }
         floating_panes max_panes=3 {
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "45%"
                 width "45%"
                 y "55%"
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 width "45%"
                 x "1%"
                 y "1%"
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 width "45%"
                 x "50%"
                 y "1%"
             }
         }
         floating_panes max_panes=4 {
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "45%"
                 width "45%"
                 x "1%"
                 y "55%"
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "45%"
                 width "45%"
                 x "50%"
                 y "55%"
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "45%"
                 width "45%"
                 x "1%"
                 y "1%"
             }
-            pane cwd="/home/ikhovind/Documents/Skole" {
+            pane cwd="/home/ikhovind" {
                 height "45%"
                 width "45%"
                 x "50%"
