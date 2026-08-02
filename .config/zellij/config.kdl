@@ -386,4 +386,4 @@ theme "onedark"
 
 pane_frames false       // removes borders/titles entirely
 // simplified_ui true      // minimal status bar
-default_layout "thesis"
+default_layout "editor"
